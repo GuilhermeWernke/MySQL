@@ -1,0 +1,62 @@
+create database Biblioteca;
+show databases;
+
+use Biblioteca;
+
+create table Autores
+(
+	id_autor int primary key,
+    nome_autor varchar(50),
+    nacionalidade varchar(50)
+);
+
+create table Categorias
+(
+	id_categoria int primary key,
+    descricao varchar(50)
+);
+
+
+create table Livros
+(
+	id_livros int primary key,
+	titulo varchar(100),
+    ano_publicacao year,
+    id_autor int,
+    id_categoria int,
+    foreign key (id_autor) references Autores (id_autor),
+    foreign key (id_categoria) references Categorias (id_categoria)
+);
+
+
+alter table Livros add preco decimal;
+alter table Categorias add quantidade int;
+
+INSERT INTO Autores (id_autor, nome_autor, nacionalidade) VALUES
+	(1, 'J.K. Rolando (Rowling)', 'Britânica'),
+	(2, 'Gabriel Garcia Marquez', 'Espanhol'),
+	(3, 'Pero Vaso de Malhação', 'Brasileiro');
+select * from Autores; 
+
+INSERT INTO Categorias (id_categoria, descricao, quantidade) VALUES
+	(1, 'Ficção', 100),
+	(2, 'Motivacional', 10),
+	(3, 'Documental/Histórico', 1);
+select * from Categorias;
+
+INSERT INTO Livros (id_livros, titulo, ano_publicacao, id_autor, id_categoria, preco) VALUES
+	(1, 'Harry Tapoware e a Pedra Socrática', 2000, 1, 1, 50),
+	(2, 'Como ser melhor', 2010, 2, 2, 75.50),
+	(3, 'Carta de Pero Vaso de Malhação', 1500, 3, 3, 999999.99);
+select * from Livros;
+
+update Categorias set descricao = 'Romance' where id_categoria = 1;
+
+update Livros set preco = preco * 1.10 where ano_publicacao < 2000;
+
+update Autores set nome_autor = 'Gabriel García Márquez' where nome_autor = 'Gabriel Garcia Marquez';
+ 
+delete from Livros where ano_publicacao < 1950;
+delete from Categorias where quantidade < 5;
+
+alter table Categorias drop column quantidade;
