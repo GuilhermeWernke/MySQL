@@ -28,3 +28,67 @@ CREATE TABLE Departamentos
     FOREIGN KEY (CodigoFuncionarioGerente) REFERENCES Funcionarios(Codigo)
     
 );
+
+/*a) Listar nome e sobrenome ordenados por sobrenome*/
+
+SELECT PrimeiroNome, UltimoNome FROM Funcionarios ORDER BY UltimoNome;
+
+/*b) Listar todos os campos de funcionários ordenados por cidade*/
+
+SELECT * FROM Funcionarios ORDER BY Cidade;
+
+/*c) Liste os funcionários que têm salário superior a R$ 1.000,00 ordenados pelo nome completo*/
+
+SELECT CONCAT(PrimeiroNome, ' ', COALESCE(SegundoNome, ''), ' ', UltimoNome) AS NomeCompleto FROM Funcionarios WHERE Salario > 1000 ORDER BY NomeCompleto;
+
+/*d) Liste a data de nascimento e o primeiro nome dos funcionários ordenados do mais novo para o mais velho*/
+
+SELECT PrimeiroNome, DataNasci FROM Funcionarios ORDER BY DataNasci DESC;
+
+/*e) Liste os funcionários como uma listagem telefônica*/
+
+SELECT CONCAT(PrimeiroNome, ' ', UltimoNome) AS Nome, Fone FROM Funcionarios;
+
+/*f) Liste o total da folha de pagamento*/
+
+SELECT SUM(Salario) AS TotalFolhaPagamento FROM Funcionarios;
+
+/*g) Liste o nome, o nome do departamento e a função de todos os funcionários*/
+
+SELECT f.PrimeiroNome, d.Nome AS NomeDepartamento, f.Funcao FROM Funcionarios f JOIN Departamentos d ON f.CodigoDepartamento = d.Codigo;
+
+/*h) Liste todos departamentos com seus respectivos gerentes*/
+
+SELECT d.Nome AS NomeDepartamento, CONCAT(f.PrimeiroNome, ' ', f.UltimoNome) AS NomeGerente FROM Departamentos d LEFT JOIN Funcionarios f ON d.CodigoFuncionarioGerente = f.Codigo;
+
+/*i) Liste o valor da folha de pagamento de cada departamento (nome)*/
+
+SELECT d.Nome AS NomeDepartamento, SUM(f.Salario) AS ValorFolha FROM Funcionarios f JOIN Departamentos d ON f.CodigoDepartamento = d.Codigo GROUP BY d.Nome;
+
+/*j) Liste os departamentos dos funcionários que têm a função de supervisor*/
+
+SELECT DISTINCT d.Nome AS NomeDepartamento FROM Funcionarios f JOIN Departamentos d ON f.CodigoDepartamento = d.Codigo WHERE f.Funcao = 'Supervisor';
+
+/*k) Liste a quantidade de funcionários desta empresa*/
+
+SELECT COUNT(*) AS QuantidadeFuncionarios FROM Funcionarios;
+
+/*l) Liste o salário médio pago pela empresa*/
+
+SELECT AVG(Salario) AS SalarioMedio FROM Funcionarios;
+
+/*m) Liste os nomes dos funcionários que moram em Recife e que exerçam a função de Telefonista*/
+
+SELECT CONCAT(PrimeiroNome, ' ', UltimoNome) AS Nome FROM Funcionarios WHERE Cidade = 'Recife' AND Funcao = 'Telefonista';
+
+/*n) Liste o nome do departamento e do funcionário ordenados por departamento e funcionário*/
+
+SELECT d.Nome AS NomeDepartamento, CONCAT(f.PrimeiroNome, ' ', f.UltimoNome) AS NomeFuncionario FROM Funcionarios f JOIN Departamentos d ON f.CodigoDepartamento = d.Codigo ORDER BY d.Nome, NomeFuncionario;
+
+/*o) Liste o nome completo de todos os funcionários que não tenham segundo nome*/
+
+SELECT CONCAT(PrimeiroNome, ' ', UltimoNome) AS NomeCompleto FROM Funcionarios WHERE SegundoNome IS NULL OR SegundoNome = '';
+
+/*p) Liste o menor salário pago pela empresa em cada departamento*/
+
+SELECT d.Nome AS NomeDepartamento, MIN(f.Salario) AS MenorSalario FROM Funcionarios f JOIN Departamentos d ON f.CodigoDepartamento = d.Codigo GROUP BY d.Nome;
