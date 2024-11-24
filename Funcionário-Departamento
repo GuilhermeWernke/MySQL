@@ -1,0 +1,30 @@
+CREATE TABLE Funcionarios 
+(
+    
+    Codigo INT PRIMARY KEY,
+    PrimeiroNome VARCHAR(50),
+    SegundoNome VARCHAR(50),
+    UltimoNome VARCHAR(50),
+    DataNasci DATE,
+    CPF CHAR(11),
+    RG CHAR(9),
+    Endereco VARCHAR(100),
+    CEP CHAR(8),
+    Cidade VARCHAR(50),
+    Fone VARCHAR(15),
+    CodigoDepartamento INT,
+    Funcao VARCHAR(50),
+    Salario DECIMAL(10, 2)
+    
+);
+
+CREATE TABLE Departamentos 
+(
+    
+    Codigo INT PRIMARY KEY,
+    Nome VARCHAR(50),
+    Localizacao VARCHAR(100),
+    CodigoFuncionarioGerente INT,
+    FOREIGN KEY (CodigoFuncionarioGerente) REFERENCES Funcionarios(Codigo)
+    
+);
